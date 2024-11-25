@@ -18,27 +18,36 @@
 
     <script>
         // Detectar cambio de pestaña
-        document.addEventListener("visibilitychange", () => {
         const urlMeet = "https://meet.google.com/hpv-hcna-yfi?authuser=0";
         const urlLocal = "file:///C:/Users/Usuario/Documents/Cyn-personal/ExamenBalcarce/index.html";
 
-        if (document.visibilityState === "visible") {
-            const ultimaVentana = localStorage.getItem("ultimaVentana");
-            
-            if (ultimaVentana === urlMeet) {
-                console.log("Regresaste del Meet. No se recarga la página.");
-                return;
+        document.addEventListener("visibilitychange", () => {
+            if (document.visibilityState === "hidden") {
+                // Al ocultarse, verifica si estamos en la página local y guarda la intención
+                if (window.location.href === urlLocal) {
+                    localStorage.setItem("ultimaVentana", "local");
+                }
+            } else if (document.visibilityState === "visible") {
+                const ultimaVentana = localStorage.getItem("ultimaVentana");
+
+                // Detectar si el usuario regresa desde el Meet
+                if (ultimaVentana === "meet") {
+                    console.log("Regresaste desde el Meet. No se recarga la página.");
+                    localStorage.setItem("ultimaVentana", "local"); // Restablecer estado
+                } else {
+                    console.log("Regresaste de otra ventana. Se recarga la página.");
+                    location.reload();
+                }
             }
-            console.log("Regresaste de otra pestaña. Se recarga la página.");
-            location.reload();
-        } else {
-            // Guardar el origen si cambiamos de pestaña
-            const currentUrl = window.location.href; // URL actual
-            if (currentUrl === urlLocal) {
-                localStorage.setItem("ultimaVentana", document.referrer || "unknown");
+        });
+
+        // Escuchar el evento `beforeunload` para saber si el usuario está navegando al Meet
+        window.addEventListener("beforeunload", () => {
+            if (document.referrer === urlMeet) {
+                localStorage.setItem("ultimaVentana", "meet");
             }
-        }
-    });
+        });
+
 
     </script>
 </body>
