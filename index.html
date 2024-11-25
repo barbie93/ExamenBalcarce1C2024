@@ -6,7 +6,8 @@
     <title>Google Form</title>
 </head>
 <body>
-    <h1>Exámen Balcarce - Primer cuatrimestre - 2024</h1>
+    <h1>Exámen Balcarce - Primer cuatrimestre - 2024</h1>    
+    <a href="https://meet.google.com/hpv-hcna-yfi?authuser=0" id="meet-link" target="_blank">Ir a Google Meet</a>
     <iframe id="google-form" 
             src="https://docs.google.com/forms/d/e/1FAIpQLSe4rZxD8xBd-LFJpE7s77cxMY0QES50zq0RVBHujgP3qpJwBQ/viewform?embedded=true" 
             width="100%" 
@@ -16,37 +17,6 @@
             marginwidth="0">
     </iframe>
 
-    <script>
-        // Detectar cambio de pestaña
-        const meetURL = "https://meet.google.com/hpv-hcna-yfi?authuser=0";
-        const localURL = "https://barbie93.github.io/ExamenBalcarce1C2024/";
-
-        let fueAlMeet = false;
-
-        document.addEventListener("visibilitychange", () => {
-            if (document.visibilityState === "hidden") {
-                // Al salir, verificar si estamos en la página local
-                if (window.location.href === localURL) {
-                    console.log("Pestaña actual se ocultó.");
-                }
-            } else if (document.visibilityState === "visible") {
-                // Al regresar, verificar si el usuario vino del Meet
-                if (fueAlMeet) {
-                    console.log("Regresaste del Meet. No se recarga la página.");
-                    fueAlMeet = false; // Restablecer el estado
-                } else {
-                    console.log("Regresaste de otra pestaña. Se recarga la página.");
-                    location.reload();
-                }
-            }
-        });
-
-        // Detectar si el usuario va específicamente al Meet
-        document.addEventListener("beforeunload", () => {
-            if (document.referrer === meetURL) {
-                fueAlMeet = true;
-            }
-        });
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
