@@ -19,11 +19,27 @@
     <script>
         // Detectar cambio de pestaña
         document.addEventListener("visibilitychange", () => {
-            if (document.visibilityState === "visible") {
-                // Recargar el iframe cuando se regrese a la pestaña
-                document.getElementById("google-form").src += '';
+        const urlMeet = "https://meet.google.com/hpv-hcna-yfi?authuser=0";
+        const urlLocal = "file:///C:/Users/Usuario/Documents/Cyn-personal/ExamenBalcarce/index.html";
+
+        if (document.visibilityState === "visible") {
+            const ultimaVentana = localStorage.getItem("ultimaVentana");
+            
+            if (ultimaVentana === urlMeet) {
+                console.log("Regresaste del Meet. No se recarga la página.");
+                return;
             }
-        });
+            console.log("Regresaste de otra pestaña. Se recarga la página.");
+            location.reload();
+        } else {
+            // Guardar el origen si cambiamos de pestaña
+            const currentUrl = window.location.href; // URL actual
+            if (currentUrl === urlLocal) {
+                localStorage.setItem("ultimaVentana", document.referrer || "unknown");
+            }
+        }
+    });
+
     </script>
 </body>
 </html>
